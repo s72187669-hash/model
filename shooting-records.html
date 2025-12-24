@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拍摄记录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #0284c7;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .upload-btn {
+            background-color: #e5e7eb;
+            border: 1px dashed #d1d5db;
+            color: #6b7280;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .upload-btn:hover {
+            background-color: #d1d5db;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <div class="flex items-center mb-8">
+            <button id="backBtn" class="mr-4 text-gray-600 hover:text-gray-900">
+                <i data-lucide="arrow-left"></i>
+            </button>
+            <h1 id="pageTitle" class="text-3xl font-bold">拍摄记录</h1>
+        </div>
+
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="modelCodeHeader" class="text-xl font-semibold">代号：***拍摄记录</h2>
+                <button id="addRecordBtn" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 flex items-center">
+                    <i data-lucide="plus" class="mr-2"></i>添加记录
+                </button>
+            </div>
+            
+            <div class="table-container">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>日期</th>
+                            <th>主款号</th>
+                            <th>商品图</th>
+                            <th>大类</th>
+                            <th>搭配款号</th>
+                            <th>搭配款图</th>
+                            <th>搭配大类</th>
+                            <th>抖音链接</th>
+                            <th>抖音ID</th>
+                            <th>是否挂车</th>
+                            <th>应用店铺</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                        <!-- 记录将在这里动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="recordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-3/4 max-w-4xl">
+            <h3 class="text-xl font-bold mb-6">添加/编辑拍摄记录</h3>
+            <form id="recordForm">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="recordDate" class="block text-sm font-medium text-gray-700 mb-1">日期</label>
+                        <input type="date" id="recordDate" name="date" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="mainProductCode" class="block text-sm font-medium text-gray-700 mb-1">主款号</label>
+                        <input type="text" id="mainProductCode" name="mainProductCode" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="productCategory" class="block text-sm font-medium text-gray-700 mb-1">大类</label>
+                        <input type="text" id="productCategory" name="productCategory" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="productImage" class="block text-sm font-medium text-gray-700 mb-1">商品图</label>
+                        <input type="file" id="productImage" name="productImage" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" accept="image/*">
+                    </div>
+                    <div>
+                        <label for="matchingProductCode" class="block text-sm font-medium text-gray-700 mb-1">搭配款号</label>
+                        <input type="text" id="matchingProductCode" name="matchingProductCode" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="matchingProductImage" class="block text-sm font-medium text-gray-700 mb-1">搭配款图</label>
+                        <input type="file" id="matchingProductImage" name="matchingProductImage" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" accept="image/*">
+                    </div>
+                    <div>
+                        <label for="matchingCategory" class="block text-sm font-medium text-gray-700 mb-1">搭配大类</label>
+                        <input type="text" id="matchingCategory" name="matchingCategory" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="douyinLink" class="block text-sm font-medium text-gray-700 mb-1">抖音链接</label>
+                        <input type="text" id="douyinLink" name="douyinLink" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="douyinId" class="block text-sm font-medium text-gray-700 mb-1">抖音ID</label>
+                        <input type="text" id="douyinId" name="douyinId" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="isTrailer" class="block text-sm font-medium text-gray-700 mb-1">是否挂车</label>
+                        <select id="isTrailer" name="isTrailer" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option value="是">是</option>
+                            <option value="否">否</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="shop" class="block text-sm font-medium text-gray-700 mb-1">应用店铺</label>
+                        <input type="text" id="shop" name="shop" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end space-x-4">
+                    <button type="button" id="cancelModalBtn" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-400">取消</button>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const backBtn = document.getElementById('backBtn');
+        const addRecordBtn = document.getElementById('addRecordBtn');
+        const recordModal = document.getElementById('recordModal');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const recordForm = document.getElementById('recordForm');
+        const recordsTableBody = document.getElementById('recordsTableBody');
+        const modelCodeHeader = document.getElementById('modelCodeHeader');
+        const pageTitle = document.getElementById('pageTitle');
+
+        let modelId = '';
+        let currentEditRecordId = null;
+
+        // 获取URL中的模特ID
+        const urlParams = new URLSearchParams(window.location.search);
+        modelId = urlParams.get('id');
+
+        // 从localStorage中获取模特数据
+        const models = JSON.parse(localStorage.getItem('models')) || [];
+        const model = models.find(m => m.id === modelId);
+
+        if (model) {
+            modelCodeHeader.textContent = `代号：${model.code}拍摄记录`;
+            pageTitle.textContent = `${model.name} - 拍摄记录`;
+        }
+
+        // 从localStorage中获取拍摄记录
+        let shootingRecords = JSON.parse(localStorage.getItem(`shootingRecords_${modelId}`)) || [];
+
+        function renderRecords() {
+            recordsTableBody.innerHTML = '';
+            if (shootingRecords.length === 0) {
+                recordsTableBody.innerHTML = `<tr><td colspan="13" class="text-center text-gray-500">暂无拍摄记录</td></tr>`;
+                return;
+            }
+            shootingRecords.forEach((record, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${record.date || ''}</td>
+                    <td>${record.mainProductCode || ''}</td>
+                    <td>${record.productImage ? `<img src="${record.productImage}" alt="商品图" class="w-16 h-16 object-cover">` : '上传商品图'}</td>
+                    <td>${record.productCategory || ''}</td>
+                    <td>${record.matchingProductCode || ''}</td>
+                    <td>${record.matchingProductImage ? `<img src="${record.matchingProductImage}" alt="搭配款图" class="w-16 h-16 object-cover">` : '上传搭配款图'}</td>
+                    <td>${record.matchingCategory || ''}</td>
+                    <td>${record.douyinLink ? `<a href="${record.douyinLink}" target="_blank">链接</a>` : ''}</td>
+                    <td>${record.douyinId || ''}</td>
+                    <td>${record.isTrailer || ''}</td>
+                    <td>${record.shop || ''}</td>
+                    <td>
+                        <button class="edit-record-btn text-green-500 hover:text-green-700" data-id="${record.id}">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="delete-record-btn text-red-500 hover:text-red-700 ml-2" data-id="${record.id}">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </td>
+                `;
+                recordsTableBody.appendChild(row);
+            });
+            lucide.createIcons();
+
+            // 添加编辑事件监听
+            document.querySelectorAll('.edit-record-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const recordId = e.currentTarget.dataset.id;
+                    editRecord(recordId);
+                });
+            });
+
+            // 添加删除事件监听
+            document.querySelectorAll('.delete-record-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const recordId = e.currentTarget.dataset.id;
+                    deleteRecord(recordId);
+                });
+            });
+        }
+
+        function openModal(recordId = null) {
+            currentEditRecordId = recordId;
+            recordForm.reset();
+
+            if (recordId) {
+                const record = shootingRecords.find(r => r.id === recordId);
+                if (record) {
+                    document.getElementById('recordDate').value = record.date;
+                    document.getElementById('mainProductCode').value = record.mainProductCode;
+                    document.getElementById('productCategory').value = record.productCategory;
+                    document.getElementById('matchingProductCode').value = record.matchingProductCode;
+                    document.getElementById('matchingCategory').value = record.matchingCategory;
+                    document.getElementById('douyinLink').value = record.douyinLink;
+                    document.getElementById('douyinId').value = record.douyinId;
+                    document.getElementById('isTrailer').value = record.isTrailer;
+                    document.getElementById('shop').value = record.shop;
+                }
+            }
+
+            recordModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            recordModal.classList.add('hidden');
+            currentEditRecordId = null;
+        }
+
+        function editRecord(recordId) {
+            openModal(recordId);
+        }
+
+        function deleteRecord(recordId) {
+            if (confirm('确定要删除这条记录吗？')) {
+                shootingRecords = shootingRecords.filter(r => r.id !== recordId);
+                localStorage.setItem(`shootingRecords_${modelId}`, JSON.stringify(shootingRecords));
+                renderRecords();
+            }
+        }
+
+        backBtn.addEventListener('click', () => {
+            window.location.href = `model-detail.html?id=${modelId}`;
+        });
+
+        addRecordBtn.addEventListener('click', () => {
+            openModal();
+        });
+
+        cancelModalBtn.addEventListener('click', closeModal);
+
+        recordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(recordForm);
+            
+            let productImageDataUrl = '';
+            if (formData.get('productImage')) {
+                productImageDataUrl = await fileToBase64(formData.get('productImage'));
+            }
+
+            let matchingProductImageDataUrl = '';
+            if (formData.get('matchingProductImage')) {
+                matchingProductImageDataUrl = await fileToBase64(formData.get('matchingProductImage'));
+            }
+
+            const recordData = {
+                id: currentEditRecordId || Date.now().toString(),
+                date: formData.get('date'),
+                mainProductCode: formData.get('mainProductCode'),
+                productImage: productImageDataUrl,
+                productCategory: formData.get('productCategory'),
+                matchingProductCode: formData.get('matchingProductCode'),
+                matchingProductImage: matchingProductImageDataUrl,
+                matchingCategory: formData.get('matchingCategory'),
+                douyinLink: formData.get('douyinLink'),
+                douyinId: formData.get('douyinId'),
+                isTrailer: formData.get('isTrailer'),
+                shop: formData.get('shop')
+            };
+
+            if (currentEditRecordId) {
+                const index = shootingRecords.findIndex(r => r.id === currentEditRecordId);
+                if (index !== -1) {
+                    shootingRecords[index] = recordData;
+                }
+            } else {
+                shootingRecords.push(recordData);
+            }
+
+            localStorage.setItem(`shootingRecords_${modelId}`, JSON.stringify(shootingRecords));
+            renderRecords();
+            closeModal();
+        });
+
+        // Helper function to convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 初始渲染
+        renderRecords();
+
+    </script>
+</body>
+</html>

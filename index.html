@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模特信息管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold text-center my-8">模特信息管理系统</h1>
+        <div class="flex justify-between items-center mb-8">
+            <div class="relative w-1/3">
+                <input type="text" id="searchInput" class="w-full py-2 pl-10 pr-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="搜索模特...">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <div>
+
+                <button id="createNewBtn" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 flex items-center">
+                    <i data-lucide="plus" class="mr-2"></i>新建模特档案
+                </button>
+            </div>
+        </div>
+        <div id="modelList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 模特卡片将在这里动态生成 -->
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const models = JSON.parse(localStorage.getItem('models')) || [];
+        const modelList = document.getElementById('modelList');
+        const searchInput = document.getElementById('searchInput');
+        const createNewBtn = document.getElementById('createNewBtn');
+
+        function renderModels(modelsToRender) {
+            // 清理undefined数据
+            modelsToRender = modelsToRender.filter(model => model && model.name);
+            
+            modelList.innerHTML = '';
+            if (modelsToRender.length === 0) {
+                modelList.innerHTML = `<p class="text-gray-500 col-span-full text-center">暂无模特信息</p>`;
+                return;
+            }
+            modelsToRender.forEach(model => {
+                const modelCard = document.createElement('div');
+                modelCard.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+                modelCard.innerHTML = `
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${model.name}</h3>
+                        <p class="text-gray-600 mb-4">${model.code}</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <p><span class="font-semibold">身高:</span> ${model.height}</p>
+                            <p><span class="font-semibold">体重:</span> ${model.weight}</p>
+                            <p><span class="font-semibold">年龄:</span> ${model.age}</p>
+                            <p><span class="font-semibold">抖音号:</span> ${model.douyin}</p>
+                        </div>
+                        <div class="flex justify-between mt-4">
+                            <button class="view-details-btn text-blue-500 hover:text-blue-700 flex items-center" data-id="${model.id}">
+                                <i data-lucide="eye" class="mr-1 h-4 w-4"></i> 查看详情
+                            </button>
+                            <div>
+                                <button class="edit-model-btn text-green-500 hover:text-green-700 flex items-center mr-4" data-id="${model.id}">
+                                    <i data-lucide="edit" class="mr-1 h-4 w-4"></i> 修改
+                                </button>
+                                <button class="delete-model-btn text-red-500 hover:text-red-700 flex items-center" data-id="${model.id}">
+                                    <i data-lucide="trash-2" class="mr-1 h-4 w-4"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                modelList.appendChild(modelCard);
+            });
+            lucide.createIcons();
+            
+            // 添加查看详情事件监听
+            document.querySelectorAll('.view-details-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modelId = e.currentTarget.dataset.id;
+                    window.location.href = `model-detail.html?id=${modelId}`;
+                });
+            });
+
+            // 添加修改事件监听
+            document.querySelectorAll('.edit-model-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const modelId = e.currentTarget.dataset.id;
+                    window.location.href = `model-form.html?id=${modelId}`;
+                });
+            });
+
+            // 添加删除事件监听
+            document.querySelectorAll('.delete-model-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const modelId = e.currentTarget.dataset.id;
+                    console.log('Delete button clicked for model ID:', modelId);
+                    
+                    // 直接删除，不显示确认框，用于测试
+                    const models = JSON.parse(localStorage.getItem('models')) || [];
+                    console.log('Models before deletion:', models);
+                    const filteredModels = models.filter(m => m.id !== modelId);
+                    console.log('Models after deletion:', filteredModels);
+                    localStorage.setItem('models', JSON.stringify(filteredModels));
+                    console.log('Models saved to localStorage');
+                    // 重新渲染列表
+                    filterModels();
+                    
+                });
+            });
+        }
+
+        function filterModels() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const latestModels = JSON.parse(localStorage.getItem('models')) || [];
+            const filteredModels = latestModels.filter(model => 
+                model && 
+                model.name && 
+                (model.name.toLowerCase().includes(searchTerm) ||
+                (model.code && model.code.toLowerCase().includes(searchTerm)))
+            );
+            renderModels(filteredModels);
+        }
+
+        createNewBtn.addEventListener('click', () => {
+            window.location.href = 'model-form.html';
+        });
+
+        searchInput.addEventListener('input', filterModels);
+
+        // 初始渲染
+        renderModels(models);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建模特档案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <div class="flex items-center mb-8">
+            <button id="backBtn" class="mr-4 text-gray-600 hover:text-gray-900">
+                <i data-lucide="arrow-left"></i>
+            </button>
+            <h1 id="formTitle" class="text-3xl font-bold">新建模特档案</h1>
+        </div>
+
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <form id="modelForm" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-1">
+                    <div class="flex flex-col items-center">
+                        <div id="imagePreview" class="w-48 h-48 bg-gray-200 rounded-full mb-4 flex items-center justify-center cursor-pointer overflow-hidden">
+                            <i data-lucide="upload" class="w-12 h-12 text-gray-400"></i>
+                            <input type="file" id="modelImage" class="hidden" accept="image/*">
+                        </div>
+                        <p class="text-gray-500 text-sm">点击上传模特图片</p>
+                    </div>
+                </div>
+                <div class="md:col-span-2 grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label for="modelName" class="block text-sm font-medium text-gray-700 mb-1">模特姓名</label>
+                        <input type="text" id="modelName" name="modelName" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required>
+                    </div>
+                    <div>
+                        <label for="modelCode" class="block text-sm font-medium text-gray-700 mb-1">模特代号</label>
+                        <input type="text" id="modelCode" name="modelCode" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required>
+                    </div>
+                    <div>
+                        <label for="shootingLevel" class="block text-sm font-medium text-gray-700 mb-1">拍摄评级</label>
+                        <input type="text" id="shootingLevel" name="shootingLevel" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="height" class="block text-sm font-medium text-gray-700 mb-1">身高</label>
+                        <input type="text" id="height" name="height" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">体重</label>
+                        <input type="text" id="weight" name="weight" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="age" class="block text-sm font-medium text-gray-700 mb-1">年龄</label>
+                        <input type="number" id="age" name="age" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">联系电话</label>
+                        <input type="tel" id="phone" name="phone" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="wechat" class="block text-sm font-medium text-gray-700 mb-1">微信号</label>
+                        <input type="text" id="wechat" name="wechat" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="douyin" class="block text-sm font-medium text-gray-700 mb-1">抖音号</label>
+                        <input type="text" id="douyin" name="douyin" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="douyinFans" class="block text-sm font-medium text-gray-700 mb-1">DY粉丝数</label>
+                        <input type="number" id="douyinFans" name="douyinFans" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="xiaohongshu" class="block text-sm font-medium text-gray-700 mb-1">小红书号</label>
+                        <input type="text" id="xiaohongshu" name="xiaohongshu" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="xiaohongshuFans" class="block text-sm font-medium text-gray-700 mb-1">XHS粉丝数</label>
+                        <input type="number" id="xiaohongshuFans" name="xiaohongshuFans" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="jimeihao" class="block text-sm font-medium text-gray-700 mb-1">集美账号</label>
+                        <input type="text" id="jimeihao" name="jimeihao" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="videoNumber" class="block text-sm font-medium text-gray-700 mb-1">视频号</label>
+                        <input type="text" id="videoNumber" name="videoNumber" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="totalShoots" class="block text-sm font-medium text-gray-700 mb-1">累计拍摄次数</label>
+                        <input type="number" id="totalShoots" name="totalShoots" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="sphFans" class="block text-sm font-medium text-gray-700 mb-1">SPH粉丝</label>
+                        <input type="number" id="sphFans" name="sphFans" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">收货地址</label>
+                        <input type="text" id="address" name="address" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+                </div>
+                <div class="col-span-3">
+                    <label for="shootingRequirements" class="block text-sm font-medium text-gray-700 mb-1">拍摄要求</label>
+                    <textarea id="shootingRequirements" name="shootingRequirements" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                </div>
+                <div class="col-span-3">
+                    <label for="modelRequirements" class="block text-sm font-medium text-gray-700 mb-1">模特要求</label>
+                    <textarea id="modelRequirements" name="modelRequirements" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                </div>
+                <div class="col-span-3 flex justify-end space-x-4">
+                    <button type="button" id="cancelBtn" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-400">取消</button>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const imagePreview = document.getElementById('imagePreview');
+        const modelImage = document.getElementById('modelImage');
+        const modelForm = document.getElementById('modelForm');
+        const backBtn = document.getElementById('backBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        // Helper function to convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        let isEditMode = false;
+        let currentModel = null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const modelId = urlParams.get('id');
+        const models = JSON.parse(localStorage.getItem('models')) || [];
+
+        if (modelId) {
+            isEditMode = true;
+            currentModel = models.find(m => m.id === modelId);
+            if (currentModel) {
+                formTitle.textContent = '修改模特档案';
+                
+                // 填充表单数据
+                document.getElementById('modelName').value = currentModel.name;
+                document.getElementById('modelCode').value = currentModel.code;
+                document.getElementById('shootingLevel').value = currentModel.shootingLevel || '';
+                document.getElementById('height').value = currentModel.height || '';
+                document.getElementById('weight').value = currentModel.weight || '';
+                document.getElementById('age').value = currentModel.age || '';
+                document.getElementById('phone').value = currentModel.phone || '';
+                document.getElementById('wechat').value = currentModel.wechat || '';
+                document.getElementById('douyin').value = currentModel.douyin || '';
+                document.getElementById('douyinFans').value = currentModel.douyinFans || '';
+                document.getElementById('xiaohongshu').value = currentModel.xiaohongshu || '';
+                document.getElementById('xiaohongshuFans').value = currentModel.xiaohongshuFans || '';
+                document.getElementById('jimeihao').value = currentModel.jimeihao || '';
+                document.getElementById('videoNumber').value = currentModel.videoNumber || '';
+                document.getElementById('totalShoots').value = currentModel.totalShoots || '';
+                document.getElementById('sphFans').value = currentModel.sphFans || '';
+                document.getElementById('address').value = currentModel.address || '';
+                document.getElementById('shootingRequirements').value = currentModel.shootingRequirements || '';
+                document.getElementById('modelRequirements').value = currentModel.modelRequirements || '';
+
+                // 显示图片
+                if (currentModel.image) {
+                    imagePreview.innerHTML = `<img src="${currentModel.image}" alt="模特图片" class="w-full h-full object-cover">`;
+                }
+            }
+        }
+
+
+        imagePreview.addEventListener('click', () => {
+            modelImage.click();
+        });
+
+        modelImage.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="模特图片" class="w-full h-full object-cover">`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        modelForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(modelForm);
+            
+            // 处理图片上传，使用Base64编码
+            let imageDataUrl = '';
+            if (modelImage.files[0]) {
+                try {
+                    imageDataUrl = await fileToBase64(modelImage.files[0]);
+                    console.log('Image converted to base64');
+                } catch (error) {
+                    console.error('Error converting image:', error);
+                    alert('图片上传失败，请重试。');
+                    return;
+                }
+            } else if (isEditMode && currentModel && currentModel.image) {
+                // 如果是编辑模式且没有上传新图片，使用原有图片
+                imageDataUrl = currentModel.image;
+            }
+
+            const modelData = {
+                id: isEditMode ? modelId : Date.now().toString(),
+                image: imageDataUrl,
+                name: formData.get('modelName'),
+                code: formData.get('modelCode'),
+                shootingLevel: formData.get('shootingLevel'),
+                height: formData.get('height'),
+                weight: formData.get('weight'),
+                age: formData.get('age'),
+                phone: formData.get('phone'),
+                wechat: formData.get('wechat'),
+                douyin: formData.get('douyin'),
+                douyinFans: formData.get('douyinFans'),
+                xiaohongshu: formData.get('xiaohongshu'),
+                xiaohongshuFans: formData.get('xiaohongshuFans'),
+                jimeihao: formData.get('jimeihao'),
+                videoNumber: formData.get('videoNumber'),
+                totalShoots: formData.get('totalShoots'),
+                sphFans: formData.get('sphFans'),
+                address: formData.get('address'),
+                shootingRequirements: formData.get('shootingRequirements'),
+                modelRequirements: formData.get('modelRequirements')
+            };
+
+            const models = JSON.parse(localStorage.getItem('models')) || [];
+            if (isEditMode) {
+                const index = models.findIndex(m => m.id === modelId);
+                if (index !== -1) {
+                    models[index] = modelData;
+                }
+            } else {
+                models.push(modelData);
+            }
+            
+            localStorage.setItem('models', JSON.stringify(models));
+            window.location.href = 'index.html';
+        });
+
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            window.location.href = isEditMode ? `model-detail.html?id=${modelId}` : 'index.html';
+        });
+    </script>
+</body>
+</html>
